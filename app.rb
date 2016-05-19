@@ -1,5 +1,5 @@
 require('sinatra')
-require('sintra/reloader')
+require('sinatra/reloader')
 also_reload('lib/**/*.rb')
 require('./lib/task')
 
