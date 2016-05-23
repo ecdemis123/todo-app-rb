@@ -7,8 +7,21 @@ require('pg')
 DB = PG.connect({:dbname => "to_do"})
 
 get('/') do
-  @tasks = Task.all()
   erb(:index)
+end
+
+get("/lists/new") do
+  erb(:list_form)
+end
+
+post("/lists") do
+  @lists = List.all()
+  erb(:lists)
+end
+
+get('/lists/:id') do
+  @list = List.find(params.fetch("id").to_i())
+  erb(:list)
 end
 
 post('/tasks') do
