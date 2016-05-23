@@ -1,14 +1,17 @@
 class Task
   @@all_tasks = [] #@@ is a class variable
 
-  attr_reader(:description)
+  attr_reader(:description, :list_id)
 
   define_method(:initialize) do |attributes|
     @description = attributes.fetch(:description)
+    @list_id = attributes.fetch(:list_id)
   end
+
   define_method(:description) do
     @description
   end
+
   define_singleton_method(:all) do
     returned_tasks = DB.exec("SELECT * FROM tasks;")
     tasks = []
@@ -20,7 +23,7 @@ class Task
   end
 
   define_method(:save) do
-    DB.exec("INSERT INTO tasks (description) VALUES ('#{@description}');")
+    DB.exec("INSERT INTO tasks (description, list_id) VALUES ('#{@description}', #{@list_id});")
   end
 
   define_singleton_method(:clear) do
@@ -28,6 +31,6 @@ class Task
   end
 
   define_method(:==) do |another_task|
-    self.description().==(another_task.description())
+    self.description().==(another_task.description()).&(self.list_id().==(another_task.list_id()))
   end
 end
